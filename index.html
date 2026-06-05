@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Para Tatiana — un rincón hecho de ti</title>
+<meta name="description" content="Una carta abierta hecha página web." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Italiana&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lila:#b9a3d9;
+  --lila-suave:#e8dff5;
+  --lila-claro:#f5f0fb;
+  --lila-fuerte:#7c5fb0;
+  --uva:#3d2a5e;
+  --noche:#1a1129;
+  --crema:#f7f3ec;
+  --rosa:#d99cb8;
+  --oro:#c9a96e;
+  --tinta:#241836;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cormorant Garamond', serif;
+  background:var(--crema);
+  color:var(--tinta);
+  overflow-x:hidden;
+  line-height:1.5;
+}
+.mono{font-family:'DM Mono', monospace; letter-spacing:0.02em}
+.italiana{font-family:'Italiana', serif; letter-spacing:0.04em}
+
+/* ---------- GRAIN OVERLAY ---------- */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/></svg>");
+  opacity:0.06; pointer-events:none; z-index:9999; mix-blend-mode:multiply;
+}
+
+/* ---------- PORTADA ---------- */
+.portada{
+  min-height:100vh;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+  position:relative;
+  background:radial-gradient(ellipse at 30% 20%, #c9b5e8 0%, transparent 50%),
+             radial-gradient(ellipse at 70% 80%, #e8b5d3 0%, transparent 50%),
+             linear-gradient(180deg, #f5f0fb 0%, #e8dff5 100%);
+  padding:2rem;
+  overflow:hidden;
+}
+.portada-sello{
+  position:absolute; top:2rem; left:50%; transform:translateX(-50%);
+  font-family:'DM Mono', monospace;
+  font-size:0.7rem; letter-spacing:0.3em;
+  color:var(--lila-fuerte); text-transform:uppercase;
+  opacity:0; animation:fadeIn 2s ease 0.5s forwards;
+}
+.portada-sello::before, .portada-sello::after{
+  content:"·"; margin:0 1rem;
+}
+.portada h1{
+  font-family:'Italiana', serif;
+  font-size:clamp(4rem, 18vw, 13rem);
+  font-weight:400;
+  color:var(--uva);
+  line-height:0.9;
+  text-align:center;
+  letter-spacing:-0.02em;
+  opacity:0;
+  animation:revealUp 1.8s cubic-bezier(.16,1,.3,1) 0.8s forwards;
+}
+.portada h1 span{
+  display:block; font-style:italic;
+  font-size:0.55em; color:var(--lila-fuerte);
+  margin-top:0.5rem;
+  letter-spacing:0.05em;
+}
+.portada-sub{
+  margin-top:2rem; max-width:560px; text-align:center;
+  font-size:clamp(1.1rem, 2.5vw, 1.4rem);
+  font-style:italic; color:var(--uva);
+  opacity:0; animation:fadeIn 2s ease 1.8s forwards;
+  padding:0 1rem;
+}
+.scroll-hint{
+  position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+  font-family:'DM Mono', monospace; font-size:0.7rem;
+  color:var(--lila-fuerte); letter-spacing:0.3em; text-transform:uppercase;
+  opacity:0; animation:fadeIn 2s ease 2.5s forwards, bounce 2.5s ease infinite 3s;
+}
+.scroll-hint::after{
+  content:""; display:block; width:1px; height:30px;
+  background:var(--lila-fuerte); margin:0.5rem auto 0;
+}
+
+/* Floating petals */
+.petalo{
+  position:absolute; width:14px; height:14px;
+  background:var(--lila); border-radius:50% 0;
+  opacity:0.6; pointer-events:none;
+  animation:caer linear infinite;
+}
+@keyframes caer{
+  0%{transform:translateY(-10vh) rotate(0deg); opacity:0}
+  10%{opacity:0.7}
+  90%{opacity:0.7}
+  100%{transform:translateY(110vh) rotate(360deg); opacity:0}
+}
+@keyframes revealUp{
+  from{opacity:0; transform:translateY(40px)}
+  to{opacity:1; transform:translateY(0)}
+}
+@keyframes fadeIn{ to{opacity:1} }
+@keyframes bounce{
+  0%, 100%{transform:translate(-50%, 0)}
+  50%{transform:translate(-50%, 8px)}
+}
+
+/* ---------- SECCIONES ---------- */
+section{padding:7rem 2rem; position:relative;}
+.contenedor{max-width:1100px; margin:0 auto;}
+
+.titulo-seccion{
+  font-family:'DM Mono', monospace;
+  font-size:0.75rem;
+  letter-spacing:0.4em;
+  text-transform:uppercase;
+  color:var(--lila-fuerte);
+  margin-bottom:1rem;
+  display:flex; align-items:center; gap:1rem;
+}
+.titulo-seccion::before{
+  content:""; display:inline-block;
+  width:30px; height:1px; background:var(--lila-fuerte);
+}
+.titulo-grande{
+  font-family:'Italiana', serif;
+  font-size:clamp(2.5rem, 6vw, 4.5rem);
+  color:var(--uva); line-height:1;
+  margin-bottom:2rem; font-weight:400;
+}
+.titulo-grande em{font-family:'Cormorant Garamond', serif; font-style:italic; color:var(--lila-fuerte);}
+
+/* ---------- CONTADOR DE DÍAS ---------- */
+.contador{
+  background:var(--noche);
+  color:var(--crema);
+  text-align:center;
+  padding:8rem 2rem;
+}
+.contador .titulo-seccion{color:var(--lila); justify-content:center;}
+.contador .titulo-seccion::before{background:var(--lila);}
+.contador-numero{
+  font-family:'Italiana', serif;
+  font-size:clamp(5rem, 18vw, 14rem);
+  color:var(--lila);
+  line-height:1;
+  font-weight:400;
+  text-shadow:0 0 80px rgba(185,163,217,0.3);
+}
+.contador-label{
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(1.3rem, 3vw, 2rem);
+  font-style:italic;
+  color:var(--lila-suave);
+  margin-top:0.5rem;
+}
+.contador-detalle{
+  font-family:'DM Mono', monospace;
+  font-size:0.75rem;
+  letter-spacing:0.3em;
+  color:var(--lila);
+  margin-top:2.5rem;
+  opacity:0.7;
+}
+.contador-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:1rem;
+  max-width:700px; margin:3rem auto 0;
+}
+.contador-grid > div{
+  padding:1.5rem 0.5rem;
+  border:1px solid rgba(185,163,217,0.25);
+  border-radius:2px;
+}
+.contador-grid .num{
+  font-family:'Italiana', serif;
+  font-size:clamp(2rem, 5vw, 3.5rem);
+  color:var(--lila);
+}
+.contador-grid .lbl{
+  font-family:'DM Mono', monospace;
+  font-size:0.65rem; letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--lila-suave); opacity:0.7;
+  margin-top:0.3rem;
+}
+
+/* ---------- INTRO / CARTA ---------- */
+.carta{background:var(--crema);}
+.carta-texto{
+  max-width:680px; margin:0 auto;
+  font-size:clamp(1.25rem, 2.3vw, 1.6rem);
+  line-height:1.7; color:var(--tinta);
+  font-weight:300;
+}
+.carta-texto p{margin-bottom:1.5rem;}
+.carta-texto p:first-letter{
+  font-family:'Italiana', serif;
+  font-size:3.5em; float:left;
+  line-height:0.85; padding:0.1em 0.1em 0 0;
+  color:var(--lila-fuerte);
+}
+.firma{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  text-align:right;
+  margin-top:2rem;
+  color:var(--lila-fuerte);
+}
+
+/* ---------- ESTADÍSTICAS NÚMEROS ---------- */
+.numeros{
+  background:linear-gradient(180deg, var(--lila-claro), var(--lila-suave));
+}
+.numeros-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:3rem 2rem;
+  margin-top:4rem;
+}
+.numero{
+  text-align:center;
+  position:relative;
+}
+.numero .cifra{
+  font-family:'Italiana', serif;
+  font-size:clamp(3rem, 6vw, 5rem);
+  color:var(--uva);
+  line-height:1;
+  font-weight:400;
+}
+.numero .leyenda{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.15rem;
+  color:var(--lila-fuerte);
+  margin-top:0.7rem;
+  letter-spacing:0.02em;
+}
+.numero .nota{
+  font-family:'DM Mono', monospace;
+  font-size:0.65rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--lila-fuerte);
+  opacity:0.6;
+  margin-top:0.4rem;
+}
+
+/* ---------- DOS CIUDADES ---------- */
+.ciudades{
+  background:var(--noche);
+  color:var(--crema);
+  overflow:hidden;
+}
+.ciudades .titulo-seccion{color:var(--lila); }
+.ciudades .titulo-seccion::before{background:var(--lila);}
+.ciudades .titulo-grande{color:var(--lila-suave);}
+.mapa-svg{
+  width:100%; max-width:900px;
+  margin:3rem auto 0; display:block;
+}
+.ciudad-info{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:2rem; margin-top:3rem; max-width:700px;
+  margin-left:auto; margin-right:auto;
+  text-align:center;
+}
+.ciudad-info > div h3{
+  font-family:'Italiana', serif;
+  font-size:2rem; color:var(--lila);
+  margin-bottom:0.5rem;
+}
+.ciudad-info > div p{
+  font-style:italic; color:var(--lila-suave);
+  opacity:0.9;
+}
+.distancia{
+  text-align:center;
+  font-family:'DM Mono', monospace;
+  font-size:0.85rem;
+  letter-spacing:0.3em;
+  color:var(--lila);
+  margin-top:2rem;
+  text-transform:uppercase;
+}
+.distancia strong{
+  font-family:'Italiana', serif;
+  font-size:1.5rem; color:var(--lila-suave);
+  letter-spacing:normal; font-weight:400;
+}
+
+/* ---------- GALERÍA ---------- */
+.galeria{background:var(--crema); padding-bottom:3rem;}
+.galeria-grid{
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  grid-auto-rows:90px;
+  gap:14px;
+  margin-top:3rem;
+}
+.foto{
+  overflow:hidden;
+  position:relative;
+  background:var(--lila-suave);
+  cursor:pointer;
+  transition:transform 0.6s cubic-bezier(.16,1,.3,1);
+}
+.foto img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform 1.2s cubic-bezier(.16,1,.3,1), filter 0.6s ease;
+  filter:saturate(0.9) contrast(1.02);
+}
+.foto:hover img{ transform:scale(1.08); filter:saturate(1.1); }
+.foto::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 60%, rgba(60,30,90,0.25) 100%);
+  opacity:0; transition:opacity 0.6s;
+}
+.foto:hover::after{opacity:1}
+
+/* Bento layout */
+.f1{grid-column:span 5; grid-row:span 5}
+.f2{grid-column:span 4; grid-row:span 4}
+.f3{grid-column:span 3; grid-row:span 4}
+.f4{grid-column:span 3; grid-row:span 3}
+.f5{grid-column:span 3; grid-row:span 3}
+.f6{grid-column:span 3; grid-row:span 5}
+.f7{grid-column:span 6; grid-row:span 4}
+.f8{grid-column:span 3; grid-row:span 4}
+.f9{grid-column:span 4; grid-row:span 5}
+.f10{grid-column:span 5; grid-row:span 5}
+.f11{grid-column:span 3; grid-row:span 3}
+.f12{grid-column:span 4; grid-row:span 4}
+.f13{grid-column:span 5; grid-row:span 4}
+.f14{grid-column:span 3; grid-row:span 5}
+
+/* ---------- LO QUE EXTRAÑO ---------- */
+.extraño{background:linear-gradient(180deg, var(--crema), var(--lila-claro));}
+.lista-extraño{
+  list-style:none;
+  max-width:800px; margin:3rem auto 0;
+  counter-reset:item;
+}
+.lista-extraño li{
+  position:relative;
+  padding:1.5rem 0 1.5rem 4rem;
+  border-bottom:1px solid var(--lila-suave);
+  font-size:clamp(1.2rem, 2.2vw, 1.5rem);
+  color:var(--tinta);
+  font-weight:300;
+  line-height:1.4;
+  counter-increment:item;
+}
+.lista-extraño li::before{
+  content:"0" counter(item);
+  position:absolute; left:0; top:1.5rem;
+  font-family:'DM Mono', monospace;
+  font-size:0.85rem;
+  color:var(--lila-fuerte);
+  letter-spacing:0.1em;
+}
+.lista-extraño li em{
+  font-family:'Italiana', serif;
+  font-style:normal;
+  color:var(--lila-fuerte);
+}
+
+/* ---------- POEMA ---------- */
+.poema{
+  background:var(--uva);
+  color:var(--lila-suave);
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.poema::before{
+  content:""; position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 30% 50%, rgba(185,163,217,0.15), transparent 60%);
+}
+.poema-cuerpo{
+  position:relative;
+  max-width:680px; margin:3rem auto 0;
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(1.2rem, 2.3vw, 1.55rem);
+  line-height:1.9;
+  font-style:italic;
+  font-weight:300;
+}
+.poema-cuerpo .estrofa{margin-bottom:2rem;}
+.poema-cuerpo strong{
+  font-family:'Italiana', serif;
+  font-style:normal;
+  font-weight:400;
+  color:var(--lila);
+  font-size:1.05em;
+}
+.poema .titulo-seccion{color:var(--lila); justify-content:center;}
+.poema .titulo-seccion::before{background:var(--lila);}
+.poema .titulo-grande{color:var(--lila-suave);}
+
+/* ---------- 7 ESTRELLAS ---------- */
+.estrellas-sec{
+  background:#0d0820;
+  color:var(--lila-suave);
+  position:relative;
+  overflow:hidden;
+}
+.cielo-fondo{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(1px 1px at 10% 20%, white, transparent),
+    radial-gradient(1px 1px at 30% 60%, white, transparent),
+    radial-gradient(1px 1px at 50% 30%, white, transparent),
+    radial-gradient(1px 1px at 70% 80%, white, transparent),
+    radial-gradient(1px 1px at 85% 15%, white, transparent),
+    radial-gradient(1px 1px at 20% 90%, white, transparent),
+    radial-gradient(1px 1px at 60% 50%, white, transparent),
+    radial-gradient(1px 1px at 90% 70%, white, transparent),
+    radial-gradient(1px 1px at 15% 50%, white, transparent),
+    radial-gradient(1px 1px at 40% 10%, white, transparent),
+    radial-gradient(1px 1px at 75% 40%, white, transparent);
+  opacity:0.5;
+}
+.estrellas-sec .contenedor{position:relative; text-align:center;}
+.estrellas-sec .titulo-seccion{color:var(--lila); justify-content:center;}
+.estrellas-sec .titulo-seccion::before{background:var(--lila);}
+.estrellas-sec .titulo-grande{color:var(--lila-suave);}
+.estrellas-texto{
+  max-width:620px; margin:0 auto;
+  font-size:clamp(1.15rem, 2.2vw, 1.4rem);
+  font-style:italic;
+  line-height:1.7;
+  opacity:0.9;
+  font-weight:300;
+}
+.siete-estrellas{
+  display:flex; justify-content:center; gap:1.2rem;
+  margin:3rem 0;
+  flex-wrap:wrap;
+}
+.estrella{
+  width:45px; height:45px;
+  position:relative;
+  color:#fff8c4;
+  animation:brillar 3s ease-in-out infinite;
+}
+.estrella:nth-child(2){animation-delay:0.4s}
+.estrella:nth-child(3){animation-delay:0.8s}
+.estrella:nth-child(4){animation-delay:1.2s}
+.estrella:nth-child(5){animation-delay:1.6s}
+.estrella:nth-child(6){animation-delay:2.0s}
+.estrella:nth-child(7){animation-delay:2.4s}
+@keyframes brillar{
+  0%, 100%{ filter:drop-shadow(0 0 4px #fff8c4); transform:scale(1) rotate(0deg);}
+  50%{ filter:drop-shadow(0 0 18px #fff8c4) drop-shadow(0 0 30px var(--lila)); transform:scale(1.15) rotate(8deg);}
+}
+
+/* ---------- MUSICA ---------- */
+.musica{
+  background:linear-gradient(135deg, #2c1d4b 0%, #6b3c5e 100%);
+  color:var(--lila-suave);
+  text-align:center;
+}
+.musica .titulo-seccion{color:var(--lila); justify-content:center;}
+.musica .titulo-seccion::before{background:var(--lila);}
+.musica .titulo-grande{color:var(--lila-suave);}
+.discos{
+  display:flex; justify-content:center; gap:3rem;
+  margin-top:3rem; flex-wrap:wrap;
+}
+.disco{
+  text-align:center;
+  max-width:280px;
+}
+.disco-vinilo{
+  width:200px; height:200px;
+  border-radius:50%;
+  background:radial-gradient(circle at center,
+    #f3d97a 0%, #f3d97a 8%,
+    #1a0d2e 9%, #1a0d2e 12%,
+    #2a1d40 13%, #2a1d40 18%,
+    #1a0d2e 19%, #1a0d2e 100%);
+  margin:0 auto 1.5rem;
+  position:relative;
+  animation:girar 12s linear infinite;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+.disco-vinilo::before{
+  content:""; position:absolute;
+  top:50%; left:50%; transform:translate(-50%, -50%);
+  width:30px; height:30px;
+  border-radius:50%;
+  background:var(--lila);
+  box-shadow:inset 0 0 0 6px #1a0d2e;
+}
+@keyframes girar{
+  to{transform:rotate(360deg)}
+}
+.disco h3{
+  font-family:'Italiana', serif;
+  font-size:1.5rem;
+  color:var(--lila);
+  margin-bottom:0.3rem;
+}
+.disco p{
+  font-style:italic;
+  font-size:1rem;
+  opacity:0.8;
+}
+.musica-cita{
+  margin-top:4rem;
+  font-style:italic;
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(1.1rem, 2.1vw, 1.4rem);
+  max-width:600px;
+  margin-left:auto; margin-right:auto;
+  opacity:0.9;
+  line-height:1.6;
+}
+
+/* ---------- LÍNEA DE TIEMPO ---------- */
+.tiempo{background:var(--crema);}
+.linea-tiempo{
+  position:relative;
+  max-width:800px; margin:4rem auto 0;
+  padding-left:2rem;
+}
+.linea-tiempo::before{
+  content:""; position:absolute;
+  left:0; top:0; bottom:0;
+  width:1px; background:var(--lila);
+}
+.evento{
+  position:relative;
+  padding:0 0 3rem 2rem;
+}
+.evento::before{
+  content:""; position:absolute;
+  left:-6px; top:6px;
+  width:12px; height:12px;
+  border-radius:50%;
+  background:var(--lila-fuerte);
+  border:3px solid var(--crema);
+  box-shadow:0 0 0 1px var(--lila-fuerte);
+}
+.evento .fecha{
+  font-family:'DM Mono', monospace;
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  color:var(--lila-fuerte);
+  text-transform:uppercase;
+  margin-bottom:0.5rem;
+}
+.evento h3{
+  font-family:'Italiana', serif;
+  font-size:clamp(1.4rem, 2.8vw, 1.8rem);
+  color:var(--uva);
+  font-weight:400;
+  margin-bottom:0.5rem;
+}
+.evento p{
+  font-size:1.1rem;
+  color:var(--tinta);
+  line-height:1.5;
+  font-weight:300;
+}
+
+/* ---------- CUMPLEAÑOS ---------- */
+.cumple{
+  background:linear-gradient(135deg, #d99cb8 0%, #b9a3d9 100%);
+  color:#3d2a5e;
+  text-align:center;
+}
+.cumple .titulo-grande{color:var(--uva);}
+.cumple .titulo-seccion{color:var(--uva); justify-content:center;}
+.cumple .titulo-seccion::before{background:var(--uva);}
+.cuenta-cumple{
+  display:flex; justify-content:center;
+  gap:2rem; margin:3rem 0;
+  flex-wrap:wrap;
+}
+.cuenta-cumple > div{
+  text-align:center;
+  min-width:80px;
+}
+.cuenta-cumple .num{
+  font-family:'Italiana', serif;
+  font-size:clamp(3rem, 7vw, 5rem);
+  color:#fff;
+  text-shadow:0 4px 20px rgba(60,30,90,0.3);
+  line-height:1;
+}
+.cuenta-cumple .lbl{
+  font-family:'DM Mono', monospace;
+  font-size:0.7rem; letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--uva);
+  margin-top:0.3rem;
+  opacity:0.8;
+}
+
+/* ---------- DESPEDIDA ---------- */
+.final{
+  background:var(--noche);
+  color:var(--crema);
+  text-align:center;
+  padding:8rem 2rem;
+  min-height:80vh;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;
+}
+.final-texto{
+  font-family:'Italiana', serif;
+  font-size:clamp(1.8rem, 4.5vw, 3.2rem);
+  line-height:1.4;
+  max-width:780px;
+  color:var(--lila-suave);
+  margin-bottom:2rem;
+}
+.final-texto em{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  color:var(--lila);
+}
+.final-firma{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.4rem;
+  color:var(--lila);
+  margin-top:2rem;
+}
+.final-firma::before{
+  content:""; display:block;
+  width:60px; height:1px;
+  background:var(--lila); margin:2rem auto 1rem;
+}
+.corazon{
+  font-size:2rem; margin:1rem 0;
+  display:inline-block;
+  animation:latir 1.5s ease-in-out infinite;
+  color:var(--rosa);
+}
+@keyframes latir{
+  0%, 100%{transform:scale(1)}
+  50%{transform:scale(1.2)}
+}
+
+/* ---------- BOTÓN MUSICA ---------- */
+.audio-btn{
+  position:fixed; bottom:20px; right:20px;
+  z-index:1000;
+  background:var(--uva); color:var(--lila);
+  border:1px solid var(--lila);
+  width:50px; height:50px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem;
+  transition:all 0.3s;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+}
+.audio-btn:hover{transform:scale(1.1); background:var(--lila-fuerte);}
+
+/* ---------- REVEAL ON SCROLL ---------- */
+.reveal{
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity 1.2s cubic-bezier(.16,1,.3,1), transform 1.2s cubic-bezier(.16,1,.3,1);
+}
+.reveal.activo{opacity:1; transform:translateY(0);}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:768px){
+  section{padding:5rem 1.5rem;}
+  .galeria-grid{
+    grid-template-columns:repeat(6, 1fr);
+    grid-auto-rows:70px;
+  }
+  .f1,.f2,.f3,.f4,.f5,.f6,.f7,.f8,.f9,.f10,.f11,.f12,.f13,.f14{
+    grid-column:span 3; grid-row:span 3;
+  }
+  .f1, .f7, .f10{grid-column:span 6; grid-row:span 4;}
+  .ciudad-info{grid-template-columns:1fr;}
+  .contador-grid{grid-template-columns:repeat(2, 1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- ====== PORTADA ====== -->
+<section class="portada">
+  <div class="portada-sello">Un regalo · Para ella · Hecho a mano</div>
+  <h1>Tatiana<span>— mi cielo —</span></h1>
+  <p class="portada-sub">No es una carta. Tampoco un mensaje cualquiera.<br>Es un rincón hecho de ti, para que sepas que aquí, en mí, sigues estando.</p>
+  <div class="scroll-hint">Bajá despacio</div>
+  <!-- petalos flotantes -->
+  <div class="petalo" style="left:5%; animation-duration:14s; animation-delay:0s;"></div>
+  <div class="petalo" style="left:25%; animation-duration:17s; animation-delay:3s;"></div>
+  <div class="petalo" style="left:45%; animation-duration:13s; animation-delay:5s;"></div>
+  <div class="petalo" style="left:65%; animation-duration:19s; animation-delay:1s;"></div>
+  <div class="petalo" style="left:85%; animation-duration:15s; animation-delay:7s;"></div>
+  <div class="petalo" style="left:15%; animation-duration:18s; animation-delay:9s;"></div>
+  <div class="petalo" style="left:75%; animation-duration:16s; animation-delay:11s;"></div>
+</section>
+
+<!-- ====== CARTA ====== -->
+<section class="carta reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">Una nota antes de empezar</div>
+    <div class="titulo-grande">Te hice <em>esto</em> porque las palabras se me quedaron cortas.</div>
+    <div class="carta-texto">
+      <p>Hace meses que no estamos como antes, y aún así no hay un solo día en que no piense en ti. No te escribí esto para pedirte nada, ni para que tomes una decisión. Lo escribí porque hay cosas que llevo guardadas y necesitan salir de alguna parte.</p>
+      <p>Pasé una tarde entera mirando todo lo que somos: las fotos, los chats, los lugares, los detalles tuyos que no se me olvidan. Y mientras lo hacía, me di cuenta de algo que ya sabía pero no me había dicho en voz alta: <em>te extraño cuando paso tiempo contigo, te extraño cuando no, te extraño en todas sus formas.</em></p>
+      <p>Lo que viene es para ti. Tómalo despacio.</p>
+      <p class="firma">— Cristian</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CONTADOR DE DÍAS ====== -->
+<section class="contador">
+  <div class="contenedor">
+    <div class="titulo-seccion">Desde aquel 9 de diciembre</div>
+    <div class="contador-numero" id="dias-juntos">—</div>
+    <div class="contador-label">días desde que dijimos <em>sí</em></div>
+    <div class="contador-detalle">09 · 12 · 2023 — HOY</div>
+    <div class="contador-grid">
+      <div><div class="num" id="años">—</div><div class="lbl">Años</div></div>
+      <div><div class="num" id="meses">—</div><div class="lbl">Meses</div></div>
+      <div><div class="num" id="semanas">—</div><div class="lbl">Semanas</div></div>
+      <div><div class="num" id="horas">—</div><div class="lbl">Horas</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== NÚMEROS NUESTROS ====== -->
+<section class="numeros reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">Lo que dicen los números</div>
+    <div class="titulo-grande">Nosotros, en <em>cifras</em>.</div>
+    <p style="max-width:600px; font-style:italic; font-size:1.15rem; color:var(--lila-fuerte);">Sin contar lo que dijimos por audio, por video, en persona, o con la mirada — solo lo que quedó escrito entre tú y yo:</p>
+    <div class="numeros-grid">
+      <div class="numero">
+        <div class="cifra">216.672</div>
+        <div class="leyenda">mensajes que nos mandamos</div>
+        <div class="nota">Whatsapp · 2024–2026</div>
+      </div>
+      <div class="numero">
+        <div class="cifra">4.269</div>
+        <div class="leyenda">veces nos dijimos <em>“te amo”</em></div>
+        <div class="nota">Tú · 1.802  ·  Yo · 2.467</div>
+      </div>
+      <div class="numero">
+        <div class="cifra">2.336</div>
+        <div class="leyenda">corazones intercambiados</div>
+        <div class="nota">❤ pulso a pulso</div>
+      </div>
+      <div class="numero">
+        <div class="cifra">582</div>
+        <div class="leyenda">días en que nos hablamos</div>
+        <div class="nota">Cada vez que abrimos los ojos</div>
+      </div>
+      <div class="numero">
+        <div class="cifra">15.737</div>
+        <div class="leyenda">veces te llamé <em>“cielo”</em></div>
+        <div class="nota">Mi palabra favorita</div>
+      </div>
+      <div class="numero">
+        <div class="cifra">11.032</div>
+        <div class="leyenda">veces me dijiste <em>“amor”</em></div>
+        <div class="nota">Y yo guardé cada una</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== DOS CIUDADES ====== -->
+<section class="ciudades reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">Dos ciudades, un mismo cielo</div>
+    <div class="titulo-grande">Tú en el frío, yo en el calor — y aún así, <em>cerca</em>.</div>
+    
+    <svg class="mapa-svg" viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+      <!-- línea curva entre ciudades -->
+      <defs>
+        <linearGradient id="lineaG" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#b9a3d9" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#b9a3d9" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#b9a3d9" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      
+      <path d="M 200 100 Q 400 30, 600 220" stroke="url(#lineaG)" stroke-width="2" fill="none" stroke-dasharray="6,6">
+        <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="3s" repeatCount="indefinite"/>
+      </path>
+      
+      <!-- Bogotá -->
+      <circle cx="200" cy="100" r="8" fill="#b9a3d9">
+        <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="200" cy="100" r="20" fill="none" stroke="#b9a3d9" stroke-width="1" opacity="0.5">
+        <animate attributeName="r" values="20;35;20" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="200" y="80" fill="#e8dff5" font-family="Italiana, serif" font-size="22" text-anchor="middle">Bogotá</text>
+      <text x="200" y="135" fill="#b9a3d9" font-family="DM Mono, monospace" font-size="10" text-anchor="middle" letter-spacing="2">TÚ</text>
+      
+      <!-- Neiva -->
+      <circle cx="600" cy="220" r="8" fill="#b9a3d9">
+        <animate attributeName="r" values="8;12;8" dur="2s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="600" cy="220" r="20" fill="none" stroke="#b9a3d9" stroke-width="1" opacity="0.5">
+        <animate attributeName="r" values="20;35;20" dur="2s" begin="1s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+      <text x="600" y="200" fill="#e8dff5" font-family="Italiana, serif" font-size="22" text-anchor="middle">Neiva</text>
+      <text x="600" y="255" fill="#b9a3d9" font-family="DM Mono, monospace" font-size="10" text-anchor="middle" letter-spacing="2">YO</text>
+      
+      <!-- corazón viajando -->
+      <text font-size="18" fill="#d99cb8">
+        <animateMotion dur="4s" repeatCount="indefinite" path="M 200 100 Q 400 30, 600 220"/>
+        ♥
+      </text>
+    </svg>
+    
+    <div class="distancia">Aproximadamente · <strong>370 km</strong> · en línea recta</div>
+    
+    <div class="ciudad-info">
+      <div>
+        <h3>Tú</h3>
+        <p>Recursos Humanos en un colegio. Le das forma a las personas. Domingos de misa a las 11, tu casa, tus rituales, tu mundo de gente y papeles.</p>
+      </div>
+      <div>
+        <h3>Yo</h3>
+        <p>Calidad en hidrocarburos. Reviso lo que otros pasan por alto. Entre normas, certificados y procedimientos — y entre cada cosa, pensándote.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== GALERÍA ====== -->
+<section class="galeria reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">Pedazos de nosotros</div>
+    <div class="titulo-grande">Cada foto, un <em>capítulo</em> que no quiero cerrar.</div>
+  </div>
+  <div class="contenedor">
+    <div class="galeria-grid">
+      <div class="foto f1"><img src="img/09.jpg" alt=""></div>
+      <div class="foto f2"><img src="img/08.jpg" alt=""></div>
+      <div class="foto f3"><img src="img/06.jpg" alt=""></div>
+      <div class="foto f4"><img src="img/02.jpg" alt=""></div>
+      <div class="foto f5"><img src="img/04.jpg" alt=""></div>
+      <div class="foto f6"><img src="img/10.jpg" alt=""></div>
+      <div class="foto f7"><img src="img/16.jpg" alt=""></div>
+      <div class="foto f8"><img src="img/13.jpg" alt=""></div>
+      <div class="foto f9"><img src="img/07.jpg" alt=""></div>
+      <div class="foto f10"><img src="img/17.jpg" alt=""></div>
+      <div class="foto f11"><img src="img/19.jpg" alt=""></div>
+      <div class="foto f12"><img src="img/15.jpg" alt=""></div>
+      <div class="foto f13"><img src="img/12.jpg" alt=""></div>
+      <div class="foto f14"><img src="img/11.jpg" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== LO QUE EXTRAÑO ====== -->
+<section class="extraño reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">Te extraño en cosas chiquitas</div>
+    <div class="titulo-grande">Hice una lista. Pero <em>se queda corta</em>.</div>
+    <ol class="lista-extraño">
+      <li>Te extraño cuando llegan las <em>11 de la mañana del domingo</em> y sé que estás en misa, y aunque no esté contigo me gusta saber que estás ahí.</li>
+      <li>Te extraño cuando veo el color <em>lila</em> en cualquier parte y pienso “a Tati le gustaría esto”.</li>
+      <li>Te extraño cuando se hace de noche y me imagino a ti, <em>apagando la luz</em> y contando las siete pegatinas del techo. Me pregunto si las sigues contando.</li>
+      <li>Te extraño cuando paso por Bogotá en una conversación cualquiera. <em>Me da algo en el pecho.</em></li>
+      <li>Te extraño cuando me sale tu palabra: <em>“mi vida”</em>. La uso sin querer, como si todavía me la hubieras dicho hoy.</li>
+      <li>Te extraño cuando suena en algún restaurante <em>Darío Gómez o Luis Alberto Posada</em>, y me río porque ya sé qué me hubieras dicho: <em>“ay amor, ya estás llorando con popular”</em>.</li>
+      <li>Te extraño cuando me toca firmar algo y veo la fecha <em>09/12</em> en cualquier formato. Mi mano se queda quieta un segundo.</li>
+      <li>Te extraño cuando viajo y veo desde la ventana del avión las nubes. Cartagena se quedó tatuada en mi cabeza.</li>
+      <li>Te extraño cada vez que entro a un museo. <em>Dos veces</em> me llevaste — y dos veces aprendí cómo te ves cuando algo te conmueve.</li>
+      <li>Te extraño cuando alguien me dice <em>“cielo”</em>, porque sé que no es como cuando me lo decías tú.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ====== POEMA ====== -->
+<section class="poema">
+  <div class="contenedor">
+    <div class="titulo-seccion">De ingeniero a administradora</div>
+    <div class="titulo-grande">Un <em>poema</em> que también es un certificado.</div>
+    <div class="poema-cuerpo">
+      <div class="estrofa">
+        Yo soy de <strong>cálculos y normas</strong>,<br>
+        de revisar lo que otros firman.<br>
+        Tú eres de <strong>personas y procesos</strong>,<br>
+        de hacer que la gente encaje.
+      </div>
+      <div class="estrofa">
+        Yo sello <em>calidad</em> en lo que toco.<br>
+        Tú gestionas el <em>recurso</em> más humano de todos.<br>
+        Y entre tu oficina y mi planta,<br>
+        nos inventamos un protocolo nuevo:<br>
+        <strong>nosotros</strong>.
+      </div>
+      <div class="estrofa">
+        Si la administración es ordenar,<br>
+        tú ordenaste lo que yo tenía suelto.<br>
+        Si la ingeniería es resolver,<br>
+        contigo aprendí que hay cosas<br>
+        que <em>no se resuelven, se cuidan</em>.
+      </div>
+      <div class="estrofa">
+        Yo, ingeniero industrial.<br>
+        Tú, administradora de empresas.<br>
+        Y juntos, hace dos años,<br>
+        firmamos un acta sin papel<br>
+        que ningún auditor podría revisar — <br>
+        <strong>te quiero</strong>, y eso no caduca.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 7 ESTRELLAS ====== -->
+<section class="estrellas-sec">
+  <div class="cielo-fondo"></div>
+  <div class="contenedor">
+    <div class="titulo-seccion">El ritual de las siete</div>
+    <div class="titulo-grande">Siete pegatinas en el <em>techo</em> — siete cosas que te quiero decir.</div>
+    
+    <div class="siete-estrellas">
+      <svg class="estrella" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+      <svg class="estrella" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+      <svg class="estrella" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+      <svg class="estrella" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+      <svg class="estrella" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+      <svg class="estrella" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+      <svg class="estrella" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 17 L6 21 L8 13.5 L2 9 L9.5 9 Z"/></svg>
+    </div>
+    
+    <p class="estrellas-texto">
+      Una para tu risa, esa que sale sin pedirte permiso.<br>
+      Dos para tu manía de hacer todo perfecto.<br>
+      Tres para cuando me regañabas con razón.<br>
+      Cuatro para los detalles que solo tú notabas.<br>
+      Cinco para tu fe — esa que yo a veces no entiendo, pero respeto.<br>
+      Seis para tus ganas de ayudar a todo el mundo, hasta cuando nadie te lo pide.<br>
+      Y siete para la última. <em>La que cuentas y te quedas dormida.</em>
+    </p>
+    <p style="margin-top:3rem; font-family:'DM Mono', monospace; font-size:0.75rem; letter-spacing:0.3em; color:var(--lila); opacity:0.7;">
+      DUERME RICO, CIELO.
+    </p>
+  </div>
+</section>
+
+<!-- ====== MUSICA ====== -->
+<section class="musica reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">La banda sonora</div>
+    <div class="titulo-grande">Para que pongas esto y <em>te acuerdes</em> de mí.</div>
+    
+    <div class="discos">
+      <div class="disco">
+        <div class="disco-vinilo"></div>
+        <h3>Darío Gómez</h3>
+        <p>“El Rey del Despecho” — pero contigo nunca hubo despecho del bueno.</p>
+      </div>
+      <div class="disco">
+        <div class="disco-vinilo"></div>
+        <h3>Luis Alberto Posada</h3>
+        <p>Esas canciones que duelen rico, que se cantan fuerte, que tú cantabas mejor que yo.</p>
+      </div>
+    </div>
+    
+    <p class="musica-cita">
+      “Si te toca la canción <em>esa</em> en la radio, <br>
+      acuérdate que en algún punto de Colombia<br>
+      hay un ingeniero del Huila pensando en ti.”
+    </p>
+  </div>
+</section>
+
+<!-- ====== LÍNEA DE TIEMPO ====== -->
+<section class="tiempo reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">Lo nuestro, contado</div>
+    <div class="titulo-grande">Una línea de tiempo en la que <em>todavía caben</em> más capítulos.</div>
+    
+    <div class="linea-tiempo">
+      <div class="evento">
+        <div class="fecha">JAMUNDÍ · ANTES</div>
+        <h3>El colegio</h3>
+        <p>Antes de ser nosotros, fuimos compañeros. Quién iba a decir que el aula nos guardaba esto.</p>
+      </div>
+      <div class="evento">
+        <div class="fecha">9 · DICIEMBRE · 2023</div>
+        <h3>El sí</h3>
+        <p>Empezamos. La fecha que ningún calendario podrá borrar de mi memoria.</p>
+      </div>
+      <div class="evento">
+        <div class="fecha">13 · DICIEMBRE · 2023</div>
+        <h3>Tu primer cumpleaños como mía</h3>
+        <p>26 años recién estrenados, y yo estrenándote a ti.</p>
+      </div>
+      <div class="evento">
+        <div class="fecha">CARTAGENA · 2024</div>
+        <h3>Nuestro único viaje juntos</h3>
+        <p>El mar, el calor, el centro histórico, y tú con cara de “esto sí es vida”. Una sola vez, pero suficiente para que se quede.</p>
+      </div>
+      <div class="evento">
+        <div class="fecha">BOGOTÁ · DOS VECES</div>
+        <h3>Dos museos, dos versiones tuyas</h3>
+        <p>Te miraba más a ti que a los cuadros. Tú no te diste cuenta. O sí, pero no dijiste nada.</p>
+      </div>
+      <div class="evento">
+        <div class="fecha">HACE UN MES</div>
+        <h3>La última vez</h3>
+        <p>Nos vimos cuando ya habíamos terminado. Y aún así, era nuestro. Y aún así, valió.</p>
+      </div>
+      <div class="evento">
+        <div class="fecha">HOY</div>
+        <h3>Este sitio</h3>
+        <p>No para presionar. Solo para que sepas que aquí, en mí, sigues estando.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CUMPLEAÑOS ====== -->
+<section class="cumple reveal">
+  <div class="contenedor">
+    <div class="titulo-seccion">13 de diciembre</div>
+    <div class="titulo-grande">Falta poco para tu <em>cumpleaños</em>.</div>
+    <p style="font-style:italic; font-size:1.2rem; max-width:520px; margin:0 auto; opacity:0.85;">No importa cómo estemos. El 13 de diciembre, en mi cabeza, siempre va a ser tuyo.</p>
+    
+    <div class="cuenta-cumple">
+      <div><div class="num" id="cumple-dias">—</div><div class="lbl">Días</div></div>
+      <div><div class="num" id="cumple-horas">—</div><div class="lbl">Horas</div></div>
+      <div><div class="num" id="cumple-min">—</div><div class="lbl">Minutos</div></div>
+      <div><div class="num" id="cumple-seg">—</div><div class="lbl">Segundos</div></div>
+    </div>
+    
+    <p style="font-family:'Italiana', serif; font-size:1.5rem; color:var(--uva); margin-top:2rem;">
+      Feliz cumpleaños anticipado, mi cielo.
+    </p>
+  </div>
+</section>
+
+<!-- ====== FINAL ====== -->
+<section class="final">
+  <div class="final-texto">
+    No te estoy pidiendo que volvamos.<br>
+    Te estoy diciendo que <em>nunca te has ido</em><br>
+    de los lugares importantes.
+  </div>
+  
+  <div class="corazon">♥</div>
+  
+  <div class="final-firma">
+    Con todo, y a pesar de todo —<br>
+    tuyo, Cristian.
+  </div>
+  <p style="margin-top:3rem; font-family:'DM Mono', monospace; font-size:0.7rem; letter-spacing:0.3em; color:var(--lila); opacity:0.5;">
+    NEIVA → BOGOTÁ · HECHO A MANO
+  </p>
+</section>
+
+<script>
+// ===== CONTADOR DE DÍAS DESDE 09/12/2023 =====
+function actualizarContador(){
+  const inicio = new Date('2023-12-09T00:00:00');
+  const ahora = new Date();
+  const diff = ahora - inicio;
+  
+  const dias = Math.floor(diff / (1000*60*60*24));
+  const años = Math.floor(dias / 365);
+  const meses = Math.floor(dias / 30.44);
+  const semanas = Math.floor(dias / 7);
+  const horas = Math.floor(diff / (1000*60*60));
+  
+  document.getElementById('dias-juntos').textContent = dias.toLocaleString('es-CO');
+  document.getElementById('años').textContent = años;
+  document.getElementById('meses').textContent = meses;
+  document.getElementById('semanas').textContent = semanas;
+  document.getElementById('horas').textContent = horas.toLocaleString('es-CO');
+}
+actualizarContador();
+
+// ===== CUMPLEAÑOS - 13 DICIEMBRE =====
+function actualizarCumple(){
+  const hoy = new Date();
+  let año = hoy.getFullYear();
+  let cumple = new Date(año, 11, 13, 0, 0, 0);
+  if (hoy > cumple) cumple = new Date(año + 1, 11, 13, 0, 0, 0);
+  
+  const diff = cumple - hoy;
+  const dias = Math.floor(diff / (1000*60*60*24));
+  const horas = Math.floor((diff / (1000*60*60)) % 24);
+  const min = Math.floor((diff / (1000*60)) % 60);
+  const seg = Math.floor((diff / 1000) % 60);
+  
+  document.getElementById('cumple-dias').textContent = dias;
+  document.getElementById('cumple-horas').textContent = horas;
+  document.getElementById('cumple-min').textContent = min;
+  document.getElementById('cumple-seg').textContent = seg;
+}
+actualizarCumple();
+setInterval(actualizarCumple, 1000);
+
+// ===== REVEAL ON SCROLL =====
+const observador = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('activo');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observador.observe(el));
+
+// ===== AÑADIR PETALOS DINÁMICOS =====
+function crearPetalo(){
+  const p = document.createElement('div');
+  p.className = 'petalo';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDuration = (12 + Math.random() * 8) + 's';
+  p.style.position = 'fixed';
+  p.style.top = '0';
+  p.style.zIndex = '5';
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 20000);
+}
+// pétalo cada cierto tiempo durante toda la página
+setInterval(crearPetalo, 4000);
+</script>
+
+</body>
+</html>
