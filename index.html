@@ -848,10 +848,18 @@ body.jg-lock{overflow:hidden; height:100vh;}
       <div class="jg-corona">👑</div>
       <h2 class="jg-titulo">El Reino de Tatiana</h2>
       <p class="jg-cuento">
-        Cuenta la leyenda que en un reino lila vive una princesa que cada noche
-        cuenta <strong>siete estrellas</strong> en su techo.<br><br>
-        Un caballero de Neiva ha decidido cruzar medio país para llegar a ella...
-        pero antes debe superar <strong>dos pruebas</strong>.<br><br>
+        Érase una vez, en un reino lejano llamado <strong>Bogotá</strong>,
+        una hermosa princesa llamada <strong>Tatiana</strong>.<br><br>
+        No era una princesa cualquiera: ponía orden en un castillo lleno de niños,
+        iba a misa los domingos a las 11, y cada noche, antes de dormir,
+        contaba <strong>siete estrellas</strong> en su techo.
+        Su reino entero era de color <em>lila</em>... y cuando sonaba
+        Darío Gómez o Luis Alberto Posada, ahí sí se le notaba la corona. 👑<br><br>
+        A <strong>304 kilómetros</strong>, en las tierras calientes de Neiva,
+        un caballero que la conocía desde los tiempos del colegio en Jamundí
+        decidió emprender el viaje más importante de su vida.<br><br>
+        Pero ojo: a una princesa así <em>nadie</em> llega fácil.
+        Hay <strong>dos pruebas</strong>... y varias ciudades atravesadas en el camino.<br><br>
         ¿Lo ayudas a llegar?
       </p>
       <button class="jg-btn" id="jg-btn-comenzar">Comenzar la aventura ⚔️</button>
@@ -882,8 +890,9 @@ body.jg-lock{overflow:hidden; height:100vh;}
       <p class="jg-cuento">
         El guardián del castillo sonríe:<br>
         <em>«Conoces bien esta historia. Pero falta lo más difícil: la distancia.»</em><br><br>
-        El caballero debe correr de <strong>Neiva a Bogotá</strong> esquivando todo
-        lo que se interponga en el camino.<br><br>
+        El caballero debe correr de <strong>Neiva a Bogotá</strong>, y en el camino
+        se atraviesan las ciudades de verdad: <em>Aipe, Natagaima, Saldaña, Espinal,
+        Girardot, Melgar, Fusagasugá y Soacha</em>. ¡Sáltalas todas!<br><br>
         Toca la pantalla (o el botón) para <strong>saltar</strong>. Tienes 3 vidas 💜
       </p>
       <button class="jg-btn" id="jg-btn-nivel2">Nivel 2 · ¡A correr! 🏇</button>
@@ -1569,6 +1578,7 @@ setInterval(crearPetalo, 4000);
       velocidad: 4.2,
       jugador: { x: 56, y: 0, vy: 0, enSuelo: true, size: 36 },
       obstaculos: [],
+      proximaCiudad: 0,
       nubes: [
         {x: 60,  y: 36, v: 0.3}, {x: 220, y: 60, v: 0.22}, {x: 380, y: 28, v: 0.26}
       ],
@@ -1598,7 +1608,41 @@ setInterval(crearPetalo, 4000);
     }
   });
 
-  const EMOJIS_OBST = ['🌵','🪨','🚧','🌪️'];
+  // Ciudades reales de la ruta Neiva → Bogotá (km aprox desde Neiva)
+  const CIUDADES = [
+    { nombre: 'AIPE',        km: 38  },
+    { nombre: 'NATAGAIMA',   km: 85  },
+    { nombre: 'SALDAÑA',     km: 120 },
+    { nombre: 'ESPINAL',     km: 150 },
+    { nombre: 'GIRARDOT',    km: 178 },
+    { nombre: 'MELGAR',      km: 207 },
+    { nombre: 'FUSAGASUGÁ',  km: 240 },
+    { nombre: 'SOACHA',      km: 275 }
+  ];
+
+  function dibujarLetrero(o, Y){
+    // poste
+    ctx.strokeStyle = 'rgba(247,243,236,0.75)';
+    ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(o.x, Y + 18); ctx.lineTo(o.x, Y - o.alto); ctx.stroke();
+    // placa
+    ctx.font = 'bold 10px monospace';
+    const tw = ctx.measureText(o.nombre).width;
+    const pw = tw + 14, ph = 20;
+    const px = o.x - pw/2, py = Y - o.alto - ph;
+    ctx.fillStyle = '#2e7d4f';
+    ctx.strokeStyle = 'rgba(247,243,236,0.9)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(px, py, pw, ph, 4);
+    else ctx.rect(px, py, pw, ph);
+    ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#f7f3ec';
+    ctx.textAlign = 'center';
+    ctx.fillText(o.nombre, o.x, py + 14);
+    ctx.textAlign = 'left';
+    o.ancho = pw;
+  }
 
   function bucle(ts){
     if (!juego || !juego.activo) return;
@@ -1662,27 +1706,23 @@ setInterval(crearPetalo, 4000);
     ctx.fillText('🤴', j.x - 18, jy + 12);
     ctx.globalAlpha = 1;
 
-    // --- obstáculos ---
-    if (ts - g.ultimoSpawn > g.gapSpawn && g.progreso < 0.94){
-      g.ultimoSpawn = ts;
-      g.gapSpawn = 950 + Math.random() * 750;
-      g.obstaculos.push({
-        x: W + 30,
-        emoji: EMOJIS_OBST[Math.floor(Math.random() * EMOJIS_OBST.length)],
-        size: 28 + Math.random() * 6
-      });
+    // --- obstáculos: las ciudades del camino ---
+    const kmRecorridos = KM_TOTAL * g.progreso;
+    while (g.proximaCiudad < CIUDADES.length && kmRecorridos >= CIUDADES[g.proximaCiudad].km - 12){
+      const c = CIUDADES[g.proximaCiudad];
+      g.obstaculos.push({ x: W + 40, nombre: c.nombre, alto: 22 + Math.random() * 8, ancho: 60 });
+      g.proximaCiudad++;
     }
     for (let i = g.obstaculos.length - 1; i >= 0; i--){
       const o = g.obstaculos[i];
       o.x -= g.velocidad;
-      ctx.font = o.size + 'px serif';
-      ctx.fillText(o.emoji, o.x - o.size/2, Y + 12);
-      if (o.x < -40){ g.obstaculos.splice(i,1); continue; }
+      dibujarLetrero(o, Y);
+      if (o.x < -90){ g.obstaculos.splice(i,1); continue; }
       // colisión (cajas reducidas, para ser amables)
       if (g.invulnerable <= 0){
         const dx = Math.abs(o.x - j.x);
         const dy = Math.abs((Y + 0) - jy);
-        if (dx < (o.size/2 + 10) && dy < 26 && j.y > -30){
+        if (dx < (o.ancho/2 + 4) && dy < 26 && j.y > -30){
           g.vidas--;
           g.invulnerable = 1300;
           elVidas.textContent = '💜'.repeat(g.vidas) + '🤍'.repeat(3 - g.vidas);
