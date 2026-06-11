@@ -705,9 +705,234 @@ section{padding:7rem 2rem; position:relative;}
   .ciudad-info{grid-template-columns:1fr;}
   .contador-grid{grid-template-columns:repeat(2, 1fr);}
 }
+
+/* ============================================================
+   JUEGO: CONQUISTAR A LA PRINCESA (gate de entrada)
+   ============================================================ */
+body.jg-lock{overflow:hidden; height:100vh;}
+#juego-gate{
+  position:fixed; inset:0; z-index:99999;
+  background:radial-gradient(ellipse at 50% 20%, #2a1b45 0%, var(--noche) 60%, #0e081a 100%);
+  display:flex; align-items:center; justify-content:center;
+  padding:18px; overflow-y:auto;
+  transition:opacity 1.2s ease, visibility 1.2s;
+}
+#juego-gate.jg-cerrado{opacity:0; visibility:hidden; pointer-events:none;}
+.jg-estrella{
+  position:absolute; width:3px; height:3px; border-radius:50%;
+  background:var(--lila-suave); opacity:.7;
+  animation:jgTitilar 3s ease-in-out infinite;
+}
+@keyframes jgTitilar{0%,100%{opacity:.15; transform:scale(.8)}50%{opacity:.9; transform:scale(1.2)}}
+.jg-card{
+  position:relative; width:100%; max-width:520px;
+  background:linear-gradient(180deg, rgba(245,240,251,.07), rgba(245,240,251,.03));
+  border:1px solid rgba(185,163,217,.35);
+  border-radius:22px; padding:34px 26px;
+  text-align:center; backdrop-filter:blur(6px);
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+.jg-pantalla{display:none; animation:jgAparece .6s ease;}
+.jg-pantalla.activa{display:block;}
+@keyframes jgAparece{from{opacity:0; transform:translateY(14px)}to{opacity:1; transform:none}}
+.jg-corona{font-size:3.2rem; margin-bottom:10px; filter:drop-shadow(0 6px 18px rgba(201,169,110,.4));}
+.jg-titulo{
+  font-family:'Italiana', serif; color:var(--crema);
+  font-size:clamp(1.7rem, 6vw, 2.4rem); letter-spacing:.05em; margin-bottom:14px;
+}
+.jg-cuento{
+  font-family:'Cormorant Garamond', serif; color:var(--lila-suave);
+  font-size:1.12rem; line-height:1.65; margin-bottom:24px;
+}
+.jg-cuento strong{color:var(--oro);}
+.jg-cuento em{color:var(--lila);}
+.jg-nivel-tag{
+  font-family:'DM Mono', monospace; font-size:.72rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--oro); margin-bottom:18px;
+}
+.jg-btn{
+  font-family:'DM Mono', monospace; font-size:.95rem; letter-spacing:.06em;
+  background:var(--lila-fuerte); color:var(--crema);
+  border:none; border-radius:999px; padding:15px 30px; cursor:pointer;
+  transition:transform .2s, background .2s, box-shadow .2s;
+  box-shadow:0 10px 30px rgba(124,95,176,.45);
+}
+.jg-btn:hover{transform:translateY(-2px) scale(1.03); background:#8d6fc4;}
+.jg-btn:active{transform:scale(.97);}
+.jg-btn-oro{background:linear-gradient(135deg, var(--oro), #b08d52); color:var(--noche); font-weight:600;
+  box-shadow:0 10px 34px rgba(201,169,110,.45); animation:jgLatido 1.6s ease-in-out infinite;}
+@keyframes jgLatido{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+.jg-btn-link{
+  display:inline-block; margin-top:16px; background:none; border:none; cursor:pointer;
+  font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1rem;
+  color:var(--lila); text-decoration:underline; text-underline-offset:4px;
+}
+.oculto{display:none !important;}
+
+/* --- Nivel 1: camino y trivia --- */
+.jg-camino{display:flex; align-items:center; gap:10px; margin-bottom:24px;}
+.jg-camino-icono{font-size:1.7rem;}
+.jg-camino-barra{
+  position:relative; flex:1; height:10px; border-radius:999px;
+  background:rgba(185,163,217,.18); border:1px solid rgba(185,163,217,.3);
+}
+.jg-camino-fill{
+  position:absolute; left:0; top:0; bottom:0; width:0%;
+  border-radius:999px; background:linear-gradient(90deg, var(--lila), var(--oro));
+  transition:width .7s cubic-bezier(.4,1.6,.5,1);
+}
+.jg-caballito{
+  position:absolute; top:-22px; left:0%; transform:translateX(-50%);
+  font-size:1.45rem; transition:left .7s cubic-bezier(.4,1.6,.5,1);
+}
+.jg-pregunta{
+  font-family:'Cormorant Garamond', serif; color:var(--crema);
+  font-size:1.3rem; line-height:1.4; margin-bottom:20px; min-height:60px;
+}
+.jg-opciones{display:grid; gap:10px;}
+.jg-opcion{
+  font-family:'Cormorant Garamond', serif; font-size:1.08rem;
+  background:rgba(245,240,251,.06); color:var(--lila-suave);
+  border:1px solid rgba(185,163,217,.35); border-radius:14px;
+  padding:13px 16px; cursor:pointer; transition:all .2s; text-align:left;
+}
+.jg-opcion:hover{background:rgba(185,163,217,.18); transform:translateX(4px);}
+.jg-opcion.correcta{background:rgba(124,95,176,.55); border-color:var(--oro); color:var(--crema);}
+.jg-opcion.incorrecta{animation:jgShake .45s; border-color:#c0626f; opacity:.55;}
+@keyframes jgShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+.jg-feedback{
+  font-family:'Cormorant Garamond', serif; font-style:italic;
+  color:var(--oro); font-size:1.05rem; margin-top:16px; min-height:28px;
+}
+
+/* --- Nivel 2: runner --- */
+.jg-hud{
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:10px; font-size:1.05rem; color:var(--crema);
+}
+.jg-hud .mono{color:var(--oro); font-size:.9rem;}
+.jg-canvas-wrap{
+  border:1px solid rgba(185,163,217,.35); border-radius:16px; overflow:hidden;
+  background:linear-gradient(180deg, #241640 0%, #3d2a5e 70%, #2a1b45 100%);
+  touch-action:manipulation;
+}
+#jg-canvas{display:block; width:100%; height:230px;}
+.jg-btn-jump{width:100%; margin-top:14px; padding:17px;}
+@media (max-width:480px){
+  .jg-card{padding:26px 16px;}
+  #jg-canvas{height:200px;}
+}
+
+/* --- Botón flotante de música --- */
+#jg-music-toggle{
+  position:fixed; bottom:20px; right:20px; z-index:9000;
+  width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
+  background:var(--lila-fuerte); color:var(--crema); font-size:1.3rem;
+  box-shadow:0 8px 24px rgba(0,0,0,.35); transition:transform .2s, background .2s;
+}
+#jg-music-toggle:hover{transform:scale(1.1); background:#8d6fc4;}
+#jg-music-toggle.pausada{opacity:.6; filter:grayscale(.6);}
+
 </style>
 </head>
 <body>
+
+<!-- ============================================================
+     JUEGO: CONQUISTAR A LA PRINCESA
+     ============================================================ -->
+<div id="juego-gate">
+  <div class="jg-card">
+
+    <!-- INTRO -->
+    <div class="jg-pantalla activa" id="jg-intro">
+      <div class="jg-corona">👑</div>
+      <h2 class="jg-titulo">El Reino de Tatiana</h2>
+      <p class="jg-cuento">
+        Cuenta la leyenda que en un reino lila vive una princesa que cada noche
+        cuenta <strong>siete estrellas</strong> en su techo.<br><br>
+        Un caballero de Neiva ha decidido cruzar medio país para llegar a ella...
+        pero antes debe superar <strong>dos pruebas</strong>.<br><br>
+        ¿Lo ayudas a llegar?
+      </p>
+      <button class="jg-btn" id="jg-btn-comenzar">Comenzar la aventura ⚔️</button>
+      <br>
+      <button class="jg-btn-link oculto" id="jg-btn-saltar">Ya jugué antes — entrar directo 💜</button>
+    </div>
+
+    <!-- NIVEL 1: TRIVIA -->
+    <div class="jg-pantalla" id="jg-nivel1">
+      <div class="jg-nivel-tag">Nivel 1 · Las pruebas del corazón</div>
+      <div class="jg-camino">
+        <span class="jg-camino-icono">🛡️</span>
+        <div class="jg-camino-barra">
+          <div class="jg-camino-fill" id="jg-fill1"></div>
+          <span class="jg-caballito" id="jg-caballito">🤴</span>
+        </div>
+        <span class="jg-camino-icono">🏰</span>
+      </div>
+      <p class="jg-pregunta" id="jg-pregunta"></p>
+      <div class="jg-opciones" id="jg-opciones"></div>
+      <p class="jg-feedback" id="jg-feedback"></p>
+    </div>
+
+    <!-- TRANSICIÓN -->
+    <div class="jg-pantalla" id="jg-trans">
+      <div class="jg-corona">🏰</div>
+      <h2 class="jg-titulo">¡Primera prueba superada!</h2>
+      <p class="jg-cuento">
+        El guardián del castillo sonríe:<br>
+        <em>«Conoces bien esta historia. Pero falta lo más difícil: la distancia.»</em><br><br>
+        El caballero debe correr de <strong>Neiva a Bogotá</strong> esquivando todo
+        lo que se interponga en el camino.<br><br>
+        Toca la pantalla (o el botón) para <strong>saltar</strong>. Tienes 3 vidas 💜
+      </p>
+      <button class="jg-btn" id="jg-btn-nivel2">Nivel 2 · ¡A correr! 🏇</button>
+    </div>
+
+    <!-- NIVEL 2: RUNNER -->
+    <div class="jg-pantalla" id="jg-nivel2">
+      <div class="jg-nivel-tag">Nivel 2 · Neiva → Bogotá</div>
+      <div class="jg-hud">
+        <span id="jg-vidas">💜💜💜</span>
+        <span class="mono" id="jg-km">304 km</span>
+      </div>
+      <div class="jg-canvas-wrap" id="jg-canvas-wrap">
+        <canvas id="jg-canvas"></canvas>
+      </div>
+      <button class="jg-btn jg-btn-jump" id="jg-btn-jump">SALTAR ⬆️</button>
+    </div>
+
+    <!-- DERROTA -->
+    <div class="jg-pantalla" id="jg-derrota">
+      <div class="jg-corona">😮‍💨</div>
+      <h2 class="jg-titulo">La distancia es dura...</h2>
+      <p class="jg-cuento">...pero este caballero no se rinde.<br>Nunca lo ha hecho.</p>
+      <button class="jg-btn" id="jg-btn-retry">Intentarlo otra vez 💪</button>
+    </div>
+
+    <!-- VICTORIA -->
+    <div class="jg-pantalla" id="jg-victoria">
+      <div class="jg-corona">🤴💜👸</div>
+      <h2 class="jg-titulo">Llegó hasta ti</h2>
+      <p class="jg-cuento">
+        El caballero superó las pruebas y los 304 kilómetros.<br><br>
+        Pero la verdad es otra, y tú la sabes:<br>
+        <strong>aquí la única conquista real fue la tuya.<br>
+        Tú me conquistaste a mí primero.</strong><br><br>
+        Este rincón es tu premio. Pasa, princesa...
+      </p>
+      <button class="jg-btn jg-btn-oro" id="jg-btn-entrar">Entrar a mi rincón 💜</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Reproductor de música (oculto) y botón flotante -->
+<div id="jg-player-wrap" style="position:fixed; width:1px; height:1px; bottom:-9999px; left:-9999px; opacity:0; pointer-events:none;">
+  <div id="jg-player"></div>
+</div>
+<button id="jg-music-toggle" class="oculto" title="Música">🎵</button>
+
 
 <!-- ====== PORTADA ====== -->
 <section class="portada">
@@ -1153,6 +1378,350 @@ function crearPetalo(){
 }
 // pétalo cada cierto tiempo durante toda la página
 setInterval(crearPetalo, 4000);
+</script>
+
+
+<script>
+// ============================================================
+// JUEGO: CONQUISTAR A LA PRINCESA
+// ============================================================
+(function(){
+  const gate = document.getElementById('juego-gate');
+  document.body.classList.add('jg-lock');
+
+  // --- estrellas decorativas del fondo del juego ---
+  for(let i=0;i<26;i++){
+    const e = document.createElement('div');
+    e.className = 'jg-estrella';
+    e.style.left = Math.random()*100 + '%';
+    e.style.top = Math.random()*100 + '%';
+    e.style.animationDelay = (Math.random()*3) + 's';
+    gate.appendChild(e);
+  }
+
+  function mostrar(id){
+    document.querySelectorAll('.jg-pantalla').forEach(p => p.classList.remove('activa'));
+    document.getElementById(id).classList.add('activa');
+  }
+
+  // ============================================================
+  // MÚSICA — Sin Bandera · Qué Lloro (arranca en el segundo 14)
+  // ============================================================
+  let ytPlayer = null, musicaSonando = false;
+  const btnMusica = document.getElementById('jg-music-toggle');
+
+  // Cargar la API de YouTube de una vez para que esté lista al final
+  (function cargarYT(){
+    const t = document.createElement('script');
+    t.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(t);
+  })();
+
+  function iniciarMusica(){
+    function crear(){
+      ytPlayer = new YT.Player('jg-player', {
+        videoId: 'Fk5oL0mgI08',
+        playerVars: { autoplay:1, start:14, controls:0, rel:0, playsinline:1, loop:1, playlist:'Fk5oL0mgI08' },
+        events: {
+          onReady: function(e){
+            e.target.seekTo(14, true);
+            e.target.setVolume(75);
+            e.target.playVideo();
+            musicaSonando = true;
+            btnMusica.classList.remove('oculto');
+          }
+        }
+      });
+    }
+    if (window.YT && window.YT.Player) crear();
+    else window.onYouTubeIframeAPIReady = crear;
+  }
+
+  btnMusica.addEventListener('click', function(){
+    if (!ytPlayer) return;
+    if (musicaSonando){ ytPlayer.pauseVideo(); btnMusica.classList.add('pausada'); }
+    else { ytPlayer.playVideo(); btnMusica.classList.remove('pausada'); }
+    musicaSonando = !musicaSonando;
+  });
+
+  function abrirPagina(){
+    iniciarMusica();
+    gate.classList.add('jg-cerrado');
+    document.body.classList.remove('jg-lock');
+    window.scrollTo(0,0);
+    try{ localStorage.setItem('jg8d7_ganado','1'); }catch(err){}
+    setTimeout(()=>{ gate.remove(); }, 1400);
+  }
+
+  // Si ya ganó antes, ofrecer entrada directa
+  try{
+    if (localStorage.getItem('jg8d7_ganado') === '1'){
+      document.getElementById('jg-btn-saltar').classList.remove('oculto');
+    }
+  }catch(err){}
+  document.getElementById('jg-btn-saltar').addEventListener('click', abrirPagina);
+
+  // ============================================================
+  // NIVEL 1 — TRIVIA
+  // ============================================================
+  const PREGUNTAS = [
+    {
+      q: '¿Dónde comenzó esta historia?',
+      op: ['En una fiesta en Cali', 'En el colegio, en Jamundí', 'Por Instagram', 'En un centro comercial'],
+      r: 1, nota: 'Donde el destino nos puso cerquita. 🏫'
+    },
+    {
+      q: '¿Qué fecha quedó marcada para siempre?',
+      op: ['24 de diciembre de 2023', '9 de noviembre de 2023', '9 de diciembre de 2023', '31 de diciembre de 2023'],
+      r: 2, nota: 'El día que empezó todo. 💜'
+    },
+    {
+      q: '¿Cuántas estrellas cuenta la princesa en su techo cada noche?',
+      op: ['5', '7', '9', '12'],
+      r: 1, nota: 'Siete. Yo también las cuento, desde lejos. ⭐'
+    },
+    {
+      q: '¿A qué ciudad con mar viajamos juntos?',
+      op: ['Santa Marta', 'San Andrés', 'Barranquilla', 'Cartagena'],
+      r: 3, nota: 'El mar nos vio felices. 🌊'
+    },
+    {
+      q: '¿Cuántas veces nos hemos dicho «te amo» por chat?',
+      op: ['Como unas 800', 'Unas 1.500', '4.269 veces', '¿Quién podría contarlas?'],
+      r: 2, nota: '4.269 «te amo» entre 216.672 mensajes. Y los que faltan. 💌'
+    }
+  ];
+
+  let preguntaActual = 0;
+  const elPregunta = document.getElementById('jg-pregunta');
+  const elOpciones = document.getElementById('jg-opciones');
+  const elFeedback = document.getElementById('jg-feedback');
+  const elFill = document.getElementById('jg-fill1');
+  const elCaballito = document.getElementById('jg-caballito');
+  let bloqueado = false;
+
+  function pintarPregunta(){
+    const p = PREGUNTAS[preguntaActual];
+    elPregunta.textContent = p.q;
+    elFeedback.textContent = '';
+    elOpciones.innerHTML = '';
+    bloqueado = false;
+    p.op.forEach(function(texto, i){
+      const b = document.createElement('button');
+      b.className = 'jg-opcion';
+      b.textContent = texto;
+      b.addEventListener('click', function(){ responder(i, b); });
+      elOpciones.appendChild(b);
+    });
+  }
+
+  function responder(i, btn){
+    if (bloqueado) return;
+    const p = PREGUNTAS[preguntaActual];
+    if (i === p.r){
+      bloqueado = true;
+      btn.classList.add('correcta');
+      elFeedback.textContent = p.nota;
+      const pct = ((preguntaActual + 1) / PREGUNTAS.length) * 100;
+      elFill.style.width = pct + '%';
+      elCaballito.style.left = pct + '%';
+      setTimeout(function(){
+        preguntaActual++;
+        if (preguntaActual < PREGUNTAS.length) pintarPregunta();
+        else mostrar('jg-trans');
+      }, 1900);
+    } else {
+      btn.classList.add('incorrecta');
+      btn.disabled = true;
+      elFeedback.textContent = 'Mmm... esa no es. Inténtalo de nuevo 😉';
+    }
+  }
+
+  document.getElementById('jg-btn-comenzar').addEventListener('click', function(){
+    mostrar('jg-nivel1');
+    pintarPregunta();
+  });
+
+  // ============================================================
+  // NIVEL 2 — RUNNER NEIVA → BOGOTÁ
+  // ============================================================
+  const canvas = document.getElementById('jg-canvas');
+  const ctx = canvas.getContext('2d');
+  const elVidas = document.getElementById('jg-vidas');
+  const elKm = document.getElementById('jg-km');
+  const KM_TOTAL = 304;
+
+  let W=0, H=0, dpr=1;
+  function dimensionar(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  let juego = null;
+
+  function nuevoJuego(){
+    return {
+      activo: true,
+      progreso: 0,                 // 0 → 1
+      velocidad: 4.2,
+      jugador: { x: 56, y: 0, vy: 0, enSuelo: true, size: 36 },
+      obstaculos: [],
+      nubes: [
+        {x: 60,  y: 36, v: 0.3}, {x: 220, y: 60, v: 0.22}, {x: 380, y: 28, v: 0.26}
+      ],
+      vidas: 3,
+      invulnerable: 0,
+      ultimoSpawn: 0,
+      gapSpawn: 1300,
+      t0: 0
+    };
+  }
+
+  function suelo(){ return H - 34; }
+
+  function saltar(){
+    if (!juego || !juego.activo) return;
+    if (juego.jugador.enSuelo){
+      juego.jugador.vy = -11.2;
+      juego.jugador.enSuelo = false;
+    }
+  }
+
+  canvas.addEventListener('pointerdown', function(e){ e.preventDefault(); saltar(); });
+  document.getElementById('jg-btn-jump').addEventListener('click', saltar);
+  document.addEventListener('keydown', function(e){
+    if (e.code === 'Space' || e.code === 'ArrowUp'){
+      if (document.getElementById('jg-nivel2').classList.contains('activa')){ e.preventDefault(); saltar(); }
+    }
+  });
+
+  const EMOJIS_OBST = ['🌵','🪨','🚧','🌪️'];
+
+  function bucle(ts){
+    if (!juego || !juego.activo) return;
+    if (!juego.t0) juego.t0 = ts;
+
+    ctx.clearRect(0,0,W,H);
+    const g = juego, j = g.jugador, Y = suelo();
+
+    // dificultad y progreso
+    g.velocidad = 4.2 + g.progreso * 2.6;
+    g.progreso += g.velocidad / 9000;          // ~30 s en total
+    const km = Math.max(0, Math.round(KM_TOTAL * (1 - g.progreso)));
+    elKm.textContent = km + ' km';
+
+    // --- fondo: nubes y carretera ---
+    ctx.font = '22px serif';
+    g.nubes.forEach(function(n){
+      n.x -= n.v;
+      if (n.x < -30) n.x = W + 30;
+      ctx.globalAlpha = 0.55;
+      ctx.fillText('☁️', n.x, n.y);
+      ctx.globalAlpha = 1;
+    });
+    // suelo
+    ctx.strokeStyle = 'rgba(185,163,217,0.55)';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, Y + 20); ctx.lineTo(W, Y + 20); ctx.stroke();
+    // marcas de la carretera que se mueven
+    ctx.strokeStyle = 'rgba(201,169,110,0.5)';
+    ctx.setLineDash([14, 18]);
+    ctx.lineDashOffset = -(ts * 0.001 * g.velocidad * 60) % 32;
+    ctx.beginPath(); ctx.moveTo(0, Y + 28); ctx.lineTo(W, Y + 28); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // letreros NEIVA (al inicio) y BOGOTÁ (al final)
+    ctx.font = '11px monospace';
+    ctx.fillStyle = 'rgba(247,243,236,0.8)';
+    if (g.progreso < 0.12){
+      const sx = 30 - g.progreso * 2200;
+      ctx.fillText('📍 NEIVA', sx, Y - 44);
+    }
+    if (g.progreso > 0.9){
+      const sx = W - (g.progreso - 0.9) * (W * 6);
+      const bx = Math.max(W - 92, sx);
+      ctx.fillText('🏰 BOGOTÁ', bx, Y - 44);
+      ctx.font = '26px serif';
+      ctx.fillText('👸', bx + 18, Y + 12);
+      ctx.font = '11px monospace';
+    }
+
+    // --- jugador ---
+    j.vy += 0.58;
+    j.y += j.vy;
+    if (j.y >= 0){ j.y = 0; j.vy = 0; j.enSuelo = true; }
+    const jy = Y + j.y;
+    if (g.invulnerable > 0){
+      g.invulnerable -= 16;
+      if (Math.floor(ts / 90) % 2 === 0){ ctx.globalAlpha = 0.35; }
+    }
+    ctx.font = j.size + 'px serif';
+    ctx.fillText('🤴', j.x - 18, jy + 12);
+    ctx.globalAlpha = 1;
+
+    // --- obstáculos ---
+    if (ts - g.ultimoSpawn > g.gapSpawn && g.progreso < 0.94){
+      g.ultimoSpawn = ts;
+      g.gapSpawn = 950 + Math.random() * 750;
+      g.obstaculos.push({
+        x: W + 30,
+        emoji: EMOJIS_OBST[Math.floor(Math.random() * EMOJIS_OBST.length)],
+        size: 28 + Math.random() * 6
+      });
+    }
+    for (let i = g.obstaculos.length - 1; i >= 0; i--){
+      const o = g.obstaculos[i];
+      o.x -= g.velocidad;
+      ctx.font = o.size + 'px serif';
+      ctx.fillText(o.emoji, o.x - o.size/2, Y + 12);
+      if (o.x < -40){ g.obstaculos.splice(i,1); continue; }
+      // colisión (cajas reducidas, para ser amables)
+      if (g.invulnerable <= 0){
+        const dx = Math.abs(o.x - j.x);
+        const dy = Math.abs((Y + 0) - jy);
+        if (dx < (o.size/2 + 10) && dy < 26 && j.y > -30){
+          g.vidas--;
+          g.invulnerable = 1300;
+          elVidas.textContent = '💜'.repeat(g.vidas) + '🤍'.repeat(3 - g.vidas);
+          if (g.vidas <= 0){
+            g.activo = false;
+            setTimeout(function(){ mostrar('jg-derrota'); }, 350);
+            return;
+          }
+        }
+      }
+    }
+
+    // --- ¿llegó a Bogotá? ---
+    if (g.progreso >= 1){
+      g.activo = false;
+      elKm.textContent = '0 km 🎉';
+      setTimeout(function(){ mostrar('jg-victoria'); }, 600);
+      return;
+    }
+
+    requestAnimationFrame(bucle);
+  }
+
+  function iniciarNivel2(){
+    mostrar('jg-nivel2');
+    dimensionar();
+    juego = nuevoJuego();
+    elVidas.textContent = '💜💜💜';
+    elKm.textContent = KM_TOTAL + ' km';
+    requestAnimationFrame(bucle);
+  }
+
+  document.getElementById('jg-btn-nivel2').addEventListener('click', iniciarNivel2);
+  document.getElementById('jg-btn-retry').addEventListener('click', iniciarNivel2);
+  window.addEventListener('resize', function(){ if (juego && juego.activo) dimensionar(); });
+
+  // --- entrar a la página ---
+  document.getElementById('jg-btn-entrar').addEventListener('click', abrirPagina);
+})();
 </script>
 
 </body>
