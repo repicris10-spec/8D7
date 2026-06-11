@@ -833,6 +833,69 @@ body.jg-lock{overflow:hidden; height:100vh;}
 #jg-music-toggle:hover{transform:scale(1.1); background:#8d6fc4;}
 #jg-music-toggle.pausada{opacity:.6; filter:grayscale(.6);}
 
+/* --- Nivel 3: memoria con fotos --- */
+.jg-memoria{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;
+  max-width:420px; margin:0 auto;
+}
+.jg-carta{
+  position:relative; aspect-ratio:1/1; cursor:pointer;
+  perspective:600px; -webkit-tap-highlight-color:transparent;
+}
+.jg-carta-inner{
+  position:absolute; inset:0; transition:transform .5s;
+  transform-style:preserve-3d;
+}
+.jg-carta.volteada .jg-carta-inner,
+.jg-carta.lista .jg-carta-inner{transform:rotateY(180deg);}
+.jg-cara{
+  position:absolute; inset:0; border-radius:12px;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden;
+  border:1px solid rgba(185,163,217,.4); overflow:hidden;
+}
+.jg-cara-trasera{
+  background:linear-gradient(135deg, var(--lila-fuerte), var(--uva));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; color:var(--lila-suave);
+}
+.jg-cara-frontal{
+  transform:rotateY(180deg);
+  background-size:cover; background-position:center;
+}
+.jg-carta.lista{pointer-events:none;}
+.jg-carta.lista .jg-cara-frontal{box-shadow:inset 0 0 0 3px var(--oro);}
+@keyframes jgBrillo{0%,100%{filter:brightness(1)}50%{filter:brightness(1.4)}}
+.jg-carta.encontrada .jg-carta-inner{animation:jgBrillo .8s ease;}
+
+/* --- Prueba final: cielo de 7 estrellas --- */
+.jg-cielo{
+  position:relative; height:260px; border-radius:16px;
+  background:radial-gradient(ellipse at 50% 100%, #2a1b45 0%, #120a22 75%);
+  border:1px solid rgba(185,163,217,.3); overflow:hidden; margin-bottom:14px;
+}
+.jg-estrella7{
+  position:absolute; background:none; border:none; cursor:pointer;
+  font-size:1.7rem; color:var(--lila-suave);
+  transform:translate(-50%,-50%);
+  animation:jgTitilar 2.2s ease-in-out infinite;
+  transition:transform .3s, text-shadow .3s; padding:8px;
+}
+.jg-estrella7:hover{transform:translate(-50%,-50%) scale(1.25);}
+.jg-estrella7.encendida{
+  color:var(--oro); animation:none; cursor:default;
+  text-shadow:0 0 18px rgba(201,169,110,.95), 0 0 40px rgba(201,169,110,.5);
+  transform:translate(-50%,-50%) scale(1.3);
+}
+.jg-mensaje-estrellas{
+  font-family:'Cormorant Garamond', serif; font-style:italic;
+  color:var(--crema); font-size:1.45rem; min-height:44px;
+  letter-spacing:.02em; margin-bottom:14px;
+}
+.jg-mensaje-estrellas .palabra{
+  opacity:0; display:inline-block; animation:jgAparece .6s ease forwards;
+  margin:0 3px; color:var(--oro);
+}
+
 </style>
 </head>
 <body>
@@ -859,7 +922,7 @@ body.jg-lock{overflow:hidden; height:100vh;}
         un caballero que la conocía desde los tiempos del colegio en Jamundí
         decidió emprender el viaje más importante de su vida.<br><br>
         Pero ojo: a una princesa así <em>nadie</em> llega fácil.
-        Hay <strong>dos pruebas</strong>... y varias ciudades atravesadas en el camino.<br><br>
+        Hay <strong>tres pruebas</strong>... y varias ciudades atravesadas en el camino.<br><br>
         ¿Lo ayudas a llegar?
       </p>
       <button class="jg-btn" id="jg-btn-comenzar">Comenzar la aventura ⚔️</button>
@@ -919,12 +982,52 @@ body.jg-lock{overflow:hidden; height:100vh;}
       <button class="jg-btn" id="jg-btn-retry">Intentarlo otra vez 💪</button>
     </div>
 
+    <!-- TRANSICIÓN 2: LA PUERTA DEL CASTILLO -->
+    <div class="jg-pantalla" id="jg-trans2">
+      <div class="jg-corona">🚪✨</div>
+      <h2 class="jg-titulo">El caballero llegó a Bogotá</h2>
+      <p class="jg-cuento">
+        Frente a él, el castillo lila. Pero la puerta del corazón de la princesa
+        no se abre con llaves...<br><br>
+        <em>«Solo quien guarda los recuerdos puede entrar»</em> — dice una
+        inscripción dorada.<br><br>
+        La última prueba: encontrar las <strong>parejas de recuerdos</strong>
+        escondidas en el cofre del castillo.
+      </p>
+      <button class="jg-btn" id="jg-btn-nivel3">Nivel 3 · Abrir el cofre 🗝️</button>
+    </div>
+
+    <!-- NIVEL 3: MEMORIA CON FOTOS -->
+    <div class="jg-pantalla" id="jg-nivel3">
+      <div class="jg-nivel-tag">Nivel 3 · El corazón del castillo</div>
+      <div class="jg-hud">
+        <span id="jg-parejas">Recuerdos: 0 / 8</span>
+        <span class="mono" id="jg-movs">0 intentos</span>
+      </div>
+      <div class="jg-memoria" id="jg-memoria"></div>
+      <p class="jg-feedback" id="jg-feedback3"></p>
+    </div>
+
+    <!-- PRUEBA FINAL: LAS 7 ESTRELLAS -->
+    <div class="jg-pantalla" id="jg-estrellas7">
+      <div class="jg-nivel-tag">Prueba final · Las siete estrellas</div>
+      <p class="jg-cuento" style="margin-bottom:10px;">
+        El cofre se abrió. Y de pronto, el techo del castillo se llenó de noche.<br>
+        Ahí están: <strong>las siete estrellas que cuentas antes de dormir</strong>.<br>
+        Toca cada una... tienen algo que decirte.
+      </p>
+      <div class="jg-cielo" id="jg-cielo"></div>
+      <p class="jg-mensaje-estrellas" id="jg-mensaje-estrellas"></p>
+      <button class="jg-btn jg-btn-oro oculto" id="jg-btn-premio">Reclamar el premio 👑</button>
+    </div>
+
     <!-- VICTORIA -->
     <div class="jg-pantalla" id="jg-victoria">
       <div class="jg-corona">🤴💜👸</div>
       <h2 class="jg-titulo">Llegó hasta ti</h2>
       <p class="jg-cuento">
-        El caballero superó las pruebas y los 304 kilómetros.<br><br>
+        El caballero superó las tres pruebas, los 304 kilómetros
+        y encendió tus siete estrellas.<br><br>
         Pero la verdad es otra, y tú la sabes:<br>
         <strong>aquí la única conquista real fue la tuya.<br>
         Tú me conquistaste a mí primero.</strong><br><br>
@@ -1739,7 +1842,7 @@ setInterval(crearPetalo, 4000);
     if (g.progreso >= 1){
       g.activo = false;
       elKm.textContent = '0 km 🎉';
-      setTimeout(function(){ mostrar('jg-victoria'); }, 600);
+      setTimeout(function(){ mostrar('jg-trans2'); }, 600);
       return;
     }
 
@@ -1758,6 +1861,133 @@ setInterval(crearPetalo, 4000);
   document.getElementById('jg-btn-nivel2').addEventListener('click', iniciarNivel2);
   document.getElementById('jg-btn-retry').addEventListener('click', iniciarNivel2);
   window.addEventListener('resize', function(){ if (juego && juego.activo) dimensionar(); });
+
+  // ============================================================
+  // NIVEL 3 — MEMORIA: EL CORAZÓN DEL CASTILLO
+  // ============================================================
+  const FOTOS_MEMORIA = ['img/01.jpg','img/02.jpg','img/03.jpg','img/04.jpg','img/05.jpg','img/06.jpg','img/07.jpg','img/08.jpg'];
+  const elMemoria = document.getElementById('jg-memoria');
+  const elParejas = document.getElementById('jg-parejas');
+  const elMovs = document.getElementById('jg-movs');
+  const elFeedback3 = document.getElementById('jg-feedback3');
+  const FRASES_PAREJA = [
+    'Ese día también sonreíste así. 💜',
+    'Mira ese recuerdo... sigue intacto.',
+    'Hasta el cofre suspira con esa foto.',
+    'Dos iguales. Como nosotros de tercos. 😄',
+    'Esa mirada abre puertas, princesa.',
+    'El castillo aplaude. 👏',
+    'Ya casi... el corazón se está abriendo.',
+    '¡El cofre está abierto! ✨'
+  ];
+  let memCartas = [], memVolteadas = [], memBloqueo = false, memParejas = 0, memMovs = 0;
+
+  function iniciarNivel3(){
+    mostrar('jg-nivel3');
+    elMemoria.innerHTML = '';
+    elFeedback3.textContent = 'Toca dos cartas y encuentra las parejas...';
+    memVolteadas = []; memBloqueo = false; memParejas = 0; memMovs = 0;
+    elParejas.textContent = 'Recuerdos: 0 / 8';
+    elMovs.textContent = '0 intentos';
+
+    // barajar 8 fotos x 2
+    memCartas = FOTOS_MEMORIA.concat(FOTOS_MEMORIA)
+      .map(function(src){ return { src: src, orden: Math.random() }; })
+      .sort(function(a,b){ return a.orden - b.orden; });
+
+    memCartas.forEach(function(c, idx){
+      const carta = document.createElement('div');
+      carta.className = 'jg-carta';
+      carta.dataset.src = c.src;
+      carta.innerHTML =
+        '<div class="jg-carta-inner">' +
+          '<div class="jg-cara jg-cara-trasera">💜</div>' +
+          '<div class="jg-cara jg-cara-frontal" style="background-image:url(\'' + c.src + '\')"></div>' +
+        '</div>';
+      carta.addEventListener('click', function(){ voltearCarta(carta); });
+      elMemoria.appendChild(carta);
+    });
+  }
+
+  function voltearCarta(carta){
+    if (memBloqueo || carta.classList.contains('volteada') || carta.classList.contains('lista')) return;
+    carta.classList.add('volteada');
+    memVolteadas.push(carta);
+    if (memVolteadas.length < 2) return;
+
+    memMovs++;
+    elMovs.textContent = memMovs + ' intentos';
+    const a = memVolteadas[0], b = memVolteadas[1];
+    memVolteadas = [];
+
+    if (a.dataset.src === b.dataset.src){
+      a.classList.add('lista','encontrada');
+      b.classList.add('lista','encontrada');
+      memParejas++;
+      elParejas.textContent = 'Recuerdos: ' + memParejas + ' / 8';
+      elFeedback3.textContent = FRASES_PAREJA[memParejas - 1];
+      if (memParejas === 8){
+        setTimeout(iniciarEstrellas, 1600);
+      }
+    } else {
+      memBloqueo = true;
+      setTimeout(function(){
+        a.classList.remove('volteada');
+        b.classList.remove('volteada');
+        memBloqueo = false;
+      }, 850);
+    }
+  }
+
+  document.getElementById('jg-btn-nivel3').addEventListener('click', iniciarNivel3);
+
+  // ============================================================
+  // PRUEBA FINAL — LAS 7 ESTRELLAS DEL TECHO
+  // ============================================================
+  const PALABRAS = ['Eres', 'mi', 'lugar', 'favorito', 'en', 'el', 'mundo'];
+  const POSICIONES = [
+    {x:14, y:30}, {x:32, y:62}, {x:47, y:22}, {x:60, y:55},
+    {x:74, y:28}, {x:86, y:64}, {x:50, y:82}
+  ];
+  let estrellasEncendidas = 0;
+
+  function iniciarEstrellas(){
+    mostrar('jg-estrellas7');
+    const cielo = document.getElementById('jg-cielo');
+    const msg = document.getElementById('jg-mensaje-estrellas');
+    cielo.innerHTML = ''; msg.innerHTML = '';
+    estrellasEncendidas = 0;
+
+    POSICIONES.forEach(function(p, i){
+      const e = document.createElement('button');
+      e.className = 'jg-estrella7';
+      e.textContent = '✦';
+      e.style.left = p.x + '%';
+      e.style.top = p.y + '%';
+      e.style.animationDelay = (i * 0.3) + 's';
+      e.addEventListener('click', function(){
+        if (e.classList.contains('encendida')) return;
+        e.classList.add('encendida');
+        e.textContent = '⭐';
+        const w = document.createElement('span');
+        w.className = 'palabra';
+        w.textContent = PALABRAS[estrellasEncendidas];
+        msg.appendChild(w);
+        msg.appendChild(document.createTextNode(' '));
+        estrellasEncendidas++;
+        if (estrellasEncendidas === 7){
+          setTimeout(function(){
+            document.getElementById('jg-btn-premio').classList.remove('oculto');
+          }, 700);
+        }
+      });
+      cielo.appendChild(e);
+    });
+  }
+
+  document.getElementById('jg-btn-premio').addEventListener('click', function(){
+    mostrar('jg-victoria');
+  });
 
   // --- entrar a la página ---
   document.getElementById('jg-btn-entrar').addEventListener('click', abrirPagina);
